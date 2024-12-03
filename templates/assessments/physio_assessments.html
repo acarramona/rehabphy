@@ -1,0 +1,50 @@
+<!-- templates/physios/physio_dashboard.html -->
+{% extends 'dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Physio Assessments - Rehabphy{% endblock %}
+
+{% block dashboard_content %}
+<div class="container-fluid mt-4">
+    {%if assessments %}
+        <div class="row shadow-sm border border-light border-2 bg-white">
+            <table class="table table-bordered table-hover">
+                <caption>
+                    These are the assessments you have successfully carried out and recorded.
+                </caption>
+                <thead>
+                <tr>
+                    <th scope="col"><input type="checkbox" id="select_all_patients"></th>
+                    <th>Patient</th>
+                    <th>SOAP Note</th>
+                    <th>Therapy Compliance Note</th>
+                    <th>Assessment Date</th>
+                    <th>...</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for assessment in assessments %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'assessments:fetch_all_patient_assessments' assessment.patient.user.id %}">
+                                    <i class="fa-regular fa-folder-open"></i>
+                                </a>
+                            </td>
+                            <td>{{ assessment.patient.get_full_name }}</td>
+                            <td>{{ assessment.soap_notes }}</td>
+                            <td>{{ assessment.therapy_compliance }}</td>
+                            <td>{{ assessment.assessment_date|date:"d/m/Y" }}</td>
+                            
+                        </tr>              
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="row shadow-sm border border-light border-2 bg-white">
+            <h3 class="fs-6 fw-bold">Your therapy assessment sessions will show up here</h3>
+            </hr>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

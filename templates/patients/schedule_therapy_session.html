@@ -1,0 +1,70 @@
+<!-- templates/patients/schedule_therapy_session.html -->
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% load form_tags %}
+
+{% block title %}Schedule Therapy Session - Rehabphy{% endblock %}
+
+{% block dashboard_content %}
+<div class="container-fluid mt-4">
+    <div class="row shadow-sm border border-light border-2 bg-white mb-3">
+        
+
+        <!-- Therapy Session History on the Right -->
+        <div class="col-md-6">
+            <h3 class="fs-6">Your Therapy Session History</h3>
+
+            <!-- Past Sessions -->
+            <div class="card">
+                <div class="card-header">
+                    <h5>Past Sessions</h5>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        {% for session in past_sessions %}
+                            <li>{{ session.session_date }} - {{ session.notes }}</li>
+                        {% empty %}
+                            <li>No past sessions.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Upcoming Sessions -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5>Upcoming Sessions</h5>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        {% for session in upcoming_sessions %}
+                            <li>{{ session.session_date }} - {{ session.notes }}</li>
+                        {% empty %}
+                            <li>No upcoming sessions.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Load Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- Load jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Load Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#id_session_date').datepicker({
+            format: 'yyyy-mm-dd', // Specify date format
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+</script>

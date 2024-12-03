@@ -1,0 +1,69 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Physio Dashboard - Rehabphy{% endblock %}
+
+{% block dashboard_content %}
+<div class="container-fluid mt-4">
+
+    <!-- Display Success and Error Messages -->
+    {% if messages %}
+        <div class="row shadow-sm border border-light border-2 bg-white mb-4">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Registered Patients Section -->
+    <div class="row shadow-sm border border-light border-2 bg-white">
+        <div class="col-md-12 pt-3 pb-3">
+            <h3 class="fs-5 fw-bold">Registered Patients</h3>
+            {% if patients %}
+                <table class="table table-bordered table-hover mt-3">
+                    <caption class="caption-top">
+                        To view or record a patient's medical assessment report, click on the corresponding table row or the icon <i class="fas fa-comment-medical text-primary"></i>.
+                    </caption>
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">
+                                <input type="checkbox" id="select_all_patients">
+                            </th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">View Assessments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in patients %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="select_patient">
+                                </td>
+                                <td>{{ patient.get_full_name }}</td>
+                                <td>{{ patient.gender }}</td>
+                                <td>{{ patient.user.email }}</td>
+                                <td>{{ patient.phone }}</td>
+                                <td>{{ patient.address }}</td>
+                                <td>
+                                    <a href="{% url 'assessments:fetch_all_patient_assessments' patient.user.id %}">
+                                        <i class="fas fa-comment-medical text-primary"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No patients to assess. Please reach out to the physio team to invite or register some patients.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

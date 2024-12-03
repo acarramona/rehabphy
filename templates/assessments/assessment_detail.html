@@ -1,0 +1,270 @@
+<!-- templates/assessments/assessment_detail.html -->
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% load form_tags %}
+
+{% block title %}Patient Assessment Details - Rehabphy{% endblock %}
+
+{% block dashboard_content %}
+<div class="container-fluid mt-4">
+    {% if not is_physio_team %}
+        <div class="row shadow-sm border border-light border-2 bg-light mb-3">
+            <div class="col-md-12 pt-4 pb-4">
+                <a href="{% url 'assessments:create_assessment' patient.user.id %}" class="btn btn-outline-primary">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    Record New Patient Assessment
+                </a>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row shadow-sm border border-light border-2 bg-white mb-3">
+        <div class="col-md-4">
+            <p class="fw-bold">Patient:</p>
+            <p class="form-control">{{ patient.get_full_name }}</p>
+        </div>
+        <div class="col-md-4">
+            <p class="fw-bold">Physiotherapist:</p>
+            {% if physio %}
+                <p class="form-control">{{ physio.get_full_name }}</p>
+            {% else %}
+                <p class="form-control">No Physiotherapist assigned</p>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <p class="fw-bold">Assessment Date:</p>
+            <p class="form-control">{{ period }}</p>
+        </div>
+    </div>
+
+    {% if assessments %}
+        <!-- Convert rom_data and pain_data to JSON script -->
+        {{ rom_data|json_script:"romData" }}
+        {{ pain_data|json_script:"painData" }}
+
+        <!-- Pain Records Section -->
+        <div class="row shadow-sm border border-light border-2 bg-white mb-3">
+            <div class="col-md-7">
+                <h3 class="fs-6">Pain Records</h3>
+                <table class="table table-bordered table-hover">
+                    <caption>The pain records are captured during regular assessments.</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Pain Level</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assessment in assessments %}
+                            <tr>
+                                <td>{{ assessment.pain_level }}</td>
+                                <td>{{ assessment.assessment_date|date:"d/m/Y" }}</td>
+                            </tr>                        
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-5">
+                <h3 class="fs-6">Pain Chart</h3>
+                {% if pain_data and pain_data|length > 0 %}
+                    <div id="pain-chart-container" class="chart-container" style="height: 300px;">
+                        <canvas id="painChart"></canvas>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No pain data available for this patient.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- SOAP Notes Section -->
+        <div class="row shadow-sm border border-light border-2 bg-white mb-3">
+            <h3 class="fs-6">SOAP Notes</h3>
+            {% for assessment in assessments %}
+                {% if assessment.soap_notes %}
+                    <div class="m-1 form-control">
+                        <p class="text-secondary">{{ assessment.assessment_date|date:"d/m/Y" }}</p>
+                        <p class="text-dark">{{ assessment.soap_notes }}</p>
+                    </div>                        
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Compliance Notes Section -->
+        <div class="row shadow-sm border border-light border-2 bg-white mb-3">
+            <h3 class="fs-6">Therapy Compliance Progress</h3>
+            {% for assessment in assessments %}
+                {% if assessment.therapy_compliance %}
+                    <div class="m-1 form-control">
+                        <p class="text-secondary">{{ assessment.assessment_date|date:"d/m/Y" }}</p>
+                        <p class="text-dark">{{ assessment.therapy_compliance }}</p>
+                    </div>                        
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- RoM Records Section -->
+        <div class="row shadow-sm border border-light border-2 bg-white mb-3">
+            <div class="col-md-6">
+                <h3 class="fs-6">RoM Records</h3>
+                <table class="table table-bordered table-hover">
+                    <caption>The Range of Motion measurements are captured during regular assessments.</caption>
+                    <thead>
+                        <tr>
+                            <th>Limb Type</th>
+                            <th>Limb</th>
+                            <th>Movement</th>
+                            <th>Assessed Value (°)</th>
+                            <th>Expected Value (°)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assessment in assessments %}
+                            {% if assessment.rom_measurements.all %}
+                                {% for measurement in assessment.rom_measurements.all %}
+                                    <tr>
+                                        <td>{{ measurement.limb_type }}</td>
+                                        <td>{{ measurement.limb }}</td>
+                                        <td>{{ measurement.movement }}</td>
+                                        <td>{{ measurement.assessed_value }}</td>
+                                        <td>{{ measurement.expected_value }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}                     
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h3 class="fs-6">Progress Charts</h3>
+                {% if rom_data and rom_data|length > 0 %}
+                    <div class="row">
+                        {% for key, data in rom_data.items %}
+                            <div class="col-md-6 mb-4">
+                                <div class="progress-chart-container" style="width: 100%; height: 300px;">
+                                    <p class="fs-6 text-secondary">{{ key }}</p>
+                                    <canvas id="chart-{{ data.slug_key }}" class="progress-chart"></canvas>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">No ROM data available for this patient.</p>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <div class="row shadow-sm border border-light border-2 bg-light mb-3">
+            <div class="col-md-12 pt-4 pb-4">
+                <p class="fs-6 fw-bold">There are no medical records available for this patient.</p>
+                <p class="text-secondary">Records will be available once the assessments have been completed.</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Track chart instances 
+let charts = {};
+
+// Pain Chart
+document.addEventListener("DOMContentLoaded", function() {
+    const painDataElement = document.getElementById('painData');
+    if (painDataElement) {
+        try {
+            const painData = JSON.parse(painDataElement.textContent);
+            if (painData && painData.dates && painData.pain_levels) {
+                const ctxPain = document.getElementById('painChart').getContext('2d');
+                if (charts['painChart']) {
+                    charts['painChart'].destroy();
+                }
+                charts['painChart'] = new Chart(ctxPain, {
+                    type: 'line',
+                    data: {
+                        labels: painData.dates,
+                        datasets: [{
+                            label: 'Pain Level',
+                            data: painData.pain_levels,
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            fill: true,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        aspectRatio: 2,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error('Pain data is not in the expected format or is missing required fields.');
+            }
+        } catch (e) {
+            console.error('Error parsing painData:', e);
+        }
+    } else {
+        console.warn('Pain data element is not found in the DOM.');
+    }
+
+    // ROM Charts
+    const romDataElement = document.getElementById('romData');
+    if (romDataElement) {
+        try {
+            const romData = JSON.parse(romDataElement.textContent);
+            for (const key in romData) {
+                if (romData.hasOwnProperty(key)) {
+                    const data = romData[key];
+                    if (data.dates && data.assessed_values && data.expected_values) {
+                        const ctxROM = document.getElementById(`chart-${data.slug_key}`).getContext('2d');
+                        if (charts[`chart-${data.slug_key}`]) {
+                            charts[`chart-${data.slug_key}`].destroy();
+                        }
+                        charts[`chart-${data.slug_key}`] = new Chart(ctxROM, {
+                            type: 'line',
+                            data: {
+                                labels: data.dates,
+                                datasets: [{
+                                    label: 'Assessed Value',
+                                    data: data.assessed_values,
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    fill: true,
+                                }, {
+                                    label: 'Expected Value',
+                                    data: data.expected_values,
+                                    borderColor: 'rgba(153, 102, 255, 1)',
+                                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                    fill: true,
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: true,
+                                aspectRatio: 2,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        console.warn(`ROM entry ${key} is missing required fields.`);
+                    }
+                }
+            }
+        } catch (e) {
+            console.error('Error parsing romData:', e);
+        }
+    } else {
+        console.warn('ROM data element is not found in the DOM.');
+    }
+});
+</script>
+{% endblock %}

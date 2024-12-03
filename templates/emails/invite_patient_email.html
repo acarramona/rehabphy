@@ -1,0 +1,61 @@
+<!-- templates/emails/invite_patient_email.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invitation to Join Our Physiotherapy Services</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333333;
+        }
+        .container {
+            margin: 20px;
+        }
+        .logo {
+            max-width: 150px;
+        }
+        .button {
+            background-color: #1e90ff;
+            color: #ffffff;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .info-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .info-list li::before {
+            content: "• ";
+            color: #1e90ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>We are delighted to invite you to experience our physiotherapy services at <strong>{{ company_name }}</strong>. Our dedicated team is committed to helping you achieve your health and wellness goals.</p>
+
+        <p>Please respond to this email with the following information so we can set up your account:</p>
+
+        <ul class="info-list">
+            <li><strong>Full Name</strong></li>
+            <li><strong>Gender</strong></li>
+            <li><strong>Address</strong></li>
+            <li><strong>Phone Number</strong></li>
+        </ul>
+
+        <p>You can also visit our site to learn more. Clicking the link below:</p>
+
+        <p><a href="{{ url }}" class="button">Visit Now</a></p>
+
+        <p>If you have any questions, please do not hesitate to reach out at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
+
+        <p>We look forward to supporting you on your journey to better health.</p>
+
+        <p>Warm regards,<br>
+        {{ sender_name }}<br>
+        {{ sender_title }}<br>
+        {{ company_name }}</p>
+    </div>
+</body>
+</html>

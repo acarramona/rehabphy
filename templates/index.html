@@ -1,0 +1,228 @@
+<!-- templates/index.html -->
+{% extends 'base.html' %} {% load static %} {% block title %}Home -
+Rehabphy{%endblock %} {% block content %}
+<style>
+  body {
+    background-color: #f8f9fa; /* Light background for the body */
+  }
+
+  /* Hero Section Gradient */
+  .bg-light {
+    background: linear-gradient(
+      to right,
+      #e3f2fd,
+      #bbdefb
+    ); /* Light blue gradient */
+  }
+
+  /* Card Hover Effect */
+  .card {
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effects */
+  }
+
+  .card:hover {
+    transform: translateY(-5px); /* Lift effect */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Shadow on hover */
+  }
+
+  /* Button Hover Effect */
+  .btn-primary {
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for button */
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    color: white; /* Text color change on hover */
+  }
+
+  /* Section Spacing */
+  .mt-5 {
+    margin-top: 3rem !important; /* Increased spacing */
+  }
+
+  /* Quote Background */
+  .blockquote {
+    background: rgba(0, 123, 255, 0.1); /* Light blue background for quotes */
+    padding: 1rem;
+    border-left: 5px solid #007bff; /* Blue border on the left */
+  }
+</style>
+<!-- Hero Section -->
+<!-- Hero Section -->
+<div class="bg-light py-5">
+  <div class="container text-center">
+    <h1 class="display-4 fw-bold">Welcome to Rehabphy</h1>
+    <p class="lead mt-3">Your Partner in Health and Recovery</p>
+    <p class="mt-4">
+      At Rehabphy, we believe in a holistic approach to physiotherapy. Our
+      mission is to help you regain your strength, flexibility, and overall
+      well-being.
+    </p>
+  </div>
+</div>
+
+<!-- Image Slider (Carousel) -->
+<div id="servicesCarousel" class="carousel slide mt-5" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img
+        src="{% static 'images/service1.jpg' %}"
+        class="d-block w-100"
+        alt="Physiotherapy Session"
+      />
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Personalized Physiotherapy</h5>
+        <p>Tailored treatment plans for your specific needs.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img
+        src="{% static 'images/service2.jpg' %}"
+        class="d-block w-100"
+        alt="Rehabilitation Exercises"
+      />
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Rehabilitation Programs</h5>
+        <p>Helping you regain strength and mobility.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img
+        src="{% static 'images/service3.jpg' %}"
+        class="d-block w-100"
+        alt="Wellness Coaching"
+      />
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Wellness Coaching</h5>
+        <p>Guiding you toward a healthier lifestyle.</p>
+      </div>
+    </div>
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#servicesCarousel"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#servicesCarousel"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<!-- Services Section -->
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Our Core Services</h2>
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img
+          src="{% static 'images/service_thumb1.jpg' %}"
+          class="card-img-top"
+          alt="Manual Therapy"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Manual Therapy</h5>
+          <p class="card-text">
+            Hands-on techniques to alleviate pain and improve function.
+          </p>
+          <a href="{% url 'services' %}" class="btn btn-primary">Learn More</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img
+          src="{% static 'images/service_thumb2.jpg' %}"
+          class="card-img-top"
+          alt="Sports Rehabilitation"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Sports Rehabilitation</h5>
+          <p class="card-text">
+            Specialized programs for athletes recovering from injuries.
+          </p>
+          <a href="{% url 'services' %}" class="btn btn-primary">Learn More</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img
+          src="{% static 'images/service_thumb3.jpg' %}"
+          class="card-img-top"
+          alt="Preventive Care"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Preventive Care</h5>
+          <p class="card-text">
+            Programs designed to prevent injuries before they occur.
+          </p>
+          <a href="{% url 'services' %}" class="btn btn-primary">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Testimonials Section -->
+<div class="bg-light py-5 mt-5">
+  <div class="container">
+    <h2 class="text-center mb-4">What Our Clients Say</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <blockquote class="blockquote">
+          <p>
+            "I have been struggling with back pain for years, but thanks to the
+            personalized care and treatment plan at this clinic, I am finally
+            feeling relief. The therapists are knowledgeable and supportive."
+          </p>
+          <footer class="blockquote-footer">
+            José Augusto - Hotel Manager
+          </footer>
+        </blockquote>
+      </div>
+      <div class="col-md-4 mb-4">
+        <blockquote class="blockquote">
+          <p>
+            "After a sports injury, I was worried about getting back on my feet.
+            The team here not only helped me recover physically but also
+            provided me with the tools to prevent future injuries. Highly
+            recommend!"
+          </p>
+          <footer class="blockquote-footer">Jane Smith - Teacher</footer>
+        </blockquote>
+      </div>
+      <div class="col-md-4 mb-4">
+        <blockquote class="blockquote">
+          <p>
+            "As an athlete, I have high demands for my body. The therapists here
+            understood my needs and tailored a treatment plan that not only
+            addressed my current injury but also improved my overall
+            performance."
+          </p>
+          <footer class="blockquote-footer">David Johnson - Athlete</footer>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container text-center my-5">
+  <h2>Ready to Start Your Recovery Journey?</h2>
+  <p>Contact us today to schedule an appointment.</p>
+  <a href="{% url 'contact' %}" class="btn btn-lg btn-primary">Get in Touch</a>
+</div>
+
+{% endblock %} {% block extra_scripts %}
+<!-- Initialize Bootstrap Carousel (optional, for custom settings) -->
+{% endblock %}

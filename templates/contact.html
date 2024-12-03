@@ -1,0 +1,72 @@
+<!-- templates/contact.html -->
+
+{% extends "base.html" %}
+
+{% block title %}
+Contact Us - Rehabphy
+{% endblock %}
+
+{% block meta_description %}
+Get in touch with Rehabphy for personalized physiotherapy services. Contact us via phone, email, or visit our clinic.
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h1 class="text-center mb-4">Contact Us</h1>
+  
+  <div class="row">
+    <!-- Contact Information -->
+    <div class="col-md-6">
+      <h3>Get in Touch</h3>
+      <p>Feel free to reach out to us with any questions or to schedule an appointment.</p>
+      <ul class="list-unstyled">
+        <li><i class="fas fa-phone-alt"></i> <strong>Phone:</strong> +1 (555) 123-4567</li>
+        <li><i class="fas fa-envelope"></i> <strong>Email:</strong> <a href="mailto:info@rehabphy.com">info@rehabphy.com</a></li>
+        <li><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> 123 Main Street, Anytown, USA</li>
+      </ul>
+      <h3 class="mt-4">Hours of Operation</h3>
+      <ul class="list-unstyled">
+        <li><strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM</li>
+        <li><strong>Saturday:</strong> 9:00 AM - 2:00 PM</li>
+        <li><strong>Sunday:</strong> Closed</li>
+      </ul>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="col-md-6">
+      <h3>Send Us a Message</h3>
+      <form method="post" action="{% url 'contact' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="name" class="form-label">Your Name</label>
+          <input type="text" class="form-control" id="name" name="name" required placeholder="Enter your full name">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Your Email</label>
+          <input type="email" class="form-control" id="email" name="email" required placeholder="Enter your email address">
+        </div>
+        <div class="mb-3">
+          <label for="subject" class="form-label">Subject</label>
+          <input type="text" class="form-control" id="subject" name="subject" required placeholder="Subject of your message">
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Your Message</label>
+          <textarea class="form-control" id="message" name="message" rows="5" required placeholder="Type your message here"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Google Map -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <h3>Our Location</h3>
+      <div class="ratio ratio-16x9">
+        <!-- Replace the src URL with your actual Google Maps embed link -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18... (Your Map Embed Code Here)" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

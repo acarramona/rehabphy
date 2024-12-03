@@ -1,0 +1,67 @@
+<!-- templates/emails/invite_physio_email.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invitation to Join Our Physiotherapy Team</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333333;
+        }
+        .container {
+            margin: 20px;
+        }
+        .logo {
+            max-width: 150px;
+        }
+        .button {
+            background-color: #1e90ff;
+            color: #ffffff;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .info-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .info-list li::before {
+            content: "• ";
+            color: #1e90ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>We are excited to invite you to join our physiotherapy team at <strong>{{ company_name }}</strong>! Your expertise and dedication to patient care make you an ideal candidate for our organization.</p>
+
+        <p>Please respond to this email with the following information to help us get to know you better:</p>
+
+        <ul class="info-list">
+            <li><strong>Full Name</strong></li>
+            <li><strong>Gender</strong></li>
+            <li><strong>Address</strong></li>
+            <li><strong>Phone Number</strong></li>
+            <li><strong>Professional Details:</strong>
+                <ul>
+                    <li>License Number</li>
+                    <li>Specialties</li>
+                </ul>
+            </li>
+        </ul>
+
+        <p>Alternatively, you can visit our site to learn more. Use the link below:</p>
+
+        <p><a href="{{ url }}" class="button">Visit the site</a></p>
+
+        <p>If you have any questions, feel free to contact us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
+
+        <p>We look forward to welcoming you to our team!</p>
+
+        <p>Best regards,<br>
+        {{ sender_name }}<br>
+        {{ sender_title }}<br>
+        {{ company_name }}</p>
+    </div>
+</body>
+</html>

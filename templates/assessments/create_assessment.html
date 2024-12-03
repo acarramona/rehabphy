@@ -1,0 +1,176 @@
+<!-- templates/assessments/create_assessment.html -->
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% load form_tags %}
+
+{% block title %}Physiotherapist Dashboard - Create Assessment{% endblock %}
+
+{% block dashboard_content %}
+<div class="container-fluid mt-4">
+    <form method="post" id="assessmentForm">
+        {% csrf_token %}
+        <div class="row d-flex justify-content-center align-items-start gap-3">
+            <div class="shadow-sm border border-light border-2 bg-white col-md-12 p-4">
+                <!-- Display Success and Error Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if not is_physio_team %}
+                    <h1 class="mb-4 fs-5 fw-bold">Record New Assessment</h1>
+                {% endif %}
+
+                <!-- Spinner -->
+                <div class="mb-3">
+                    <div id="loadingSpinner" class="text-center my-3" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Submitting...</span>
+                        </div>
+                        <p>Submitting assessment, please wait...</p>
+                    </div>
+                </div>
+
+                <!-- Assessment Form Fields -->
+                <div class="row col-md-12 bg-light pb-4 pt-4 mb-3 round">
+                    <div class="col-md-4 mb-3">
+                        {{ assessment_form.non_field_errors }}
+                        <label for="{{ assessment_form.physio.id_for_label }}" class="form-label">Physiotherapist</label>
+                        <span class="form-control">{{ physio.get_full_name }}</span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        {{ assessment_form.assessment_date }} 
+                        <label for="{{ assessment_form.patient.id_for_label }}" class="form-label">{{ assessment_form.patient.label }}</label>
+                        <span class="form-control">{{ patient.get_full_name }}</span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        {{ assessment_form.non_field_errors }}
+                        <label for="{{ assessment_form.assessment_date.id_for_label }}" class="form-label">Assessment Date</label>
+                        <span class="form-control">{{ assessment_date }}</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-control">
+                        {{ assessment_form.non_field_errors }}
+                        <label for="{{ assessment_form.pain_level.id_for_label }}" class="form-label">Pain Level</label>
+                        {{ assessment_form.pain_level }}  
+                        <output class="form-control-plaintext">{{ assessment_form.pain_level.value|default:0 }}</output>  <!-- Display the current value -->
+                        {% if assessment_form.pain_level.errors %}
+                            <div class="text-danger">{{ assessment_form.pain_level.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ assessment_form.therapy_compliance.id_for_label }}" class="form-label">{{ assessment_form.therapy_compliance.label }}</label>
+                    {{ assessment_form.therapy_compliance|add_class:"form-control" }}
+                    {% if assessment_form.therapy_compliance.errors %}
+                        <div class="text-danger">{{ assessment_form.therapy_compliance.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ assessment_form.soap_notes.id_for_label }}" class="form-label">{{ assessment_form.soap_notes.label }}</label>
+                    {{ assessment_form.soap_notes|add_class:"form-control" }}
+                    {% if assessment_form.soap_notes.errors %}
+                        <div class="text-danger">{{ assessment_form.soap_notes.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="shadow-sm border border-light border-2 bg-white col-md-12 p-4">
+                <!-- ROM Measurements Formset -->
+                {{ formset.management_form }}
+                <p class="fs">Range of Motion Measurements</p>
+
+                <!-- Formset container -->
+                <div id="formset-container">
+                    {% for form in formset %}
+                        <div class="border p-3 mb-3 formset-form" id="form-{{ forloop.counter0 }}">
+                            {{ form.non_field_errors }}
+                            <!-- Render form fields -->
+                            <!-- Limb Type and Limb -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="{{ form.limb_type.id_for_label }}" class="form-label">Limb Type</label>
+                                    {{ form.limb_type|add_class:"form-control" }}
+                                    {% if form.limb_type.errors %}
+                                        <div class="text-danger">{{ form.limb_type.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{ form.limb.id_for_label }}" class="form-label">{{ form.limb.label }}</label>
+                                    {{ form.limb|add_class:"form-control" }}
+                                    {% if form.limb.errors %}
+                                        <div class="text-danger">{{ form.limb.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- Movement, Assessed Value, Expected Value -->
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label for="{{ form.movement.id_for_label }}" class="form-label">{{ form.movement.label }}</label>
+                                    {{ form.movement|add_class:"form-control" }}
+                                    {% if form.movement.errors %}
+                                        <div class="text-danger">{{ form.movement.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="{{ form.assessed_value.id_for_label }}" class="form-label">{{ form.assessed_value.label }}</label>
+                                    {{ form.assessed_value|add_class:"form-control" }}
+                                    {% if form.assessed_value.errors %}
+                                        <div class="text-danger">{{ form.assessed_value.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="{{ form.expected_value.id_for_label }}" class="form-label">{{ form.expected_value.label }}</label>
+                                    {{ form.expected_value|add_class:"form-control" }}
+                                    {% if form.expected_value.errors %}
+                                        <div class="text-danger">{{ form.expected_value.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- Remove Measurement Button -->
+                            <div class="text-end mt-2">
+                                <button type="button" class="btn btn-danger remove-form-btn">
+                                    <i class="fa-solid fa-trash"></i> Remove 
+                                </button>
+                            </div>
+                            <!-- Include DELETE field if available -->
+                            {% if form.DELETE %}
+                                {{ form.DELETE }}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Add Measurement Button -->
+                <button type="button" id="add-form" class="btn btn-success mt-2">
+                    <i class="fa-solid fa-circle-plus"></i> Add
+                </button>
+            </div>
+            <div class="shadow-sm border border-light border-2 bg-light col-md-12 p-4">
+                <!-- Submit Button -->
+                <div class="mt-3 mb-3">
+                    <button type="submit" class="btn btn-primary" id="submitButton">Submit Assessment</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- Pass total form count to JavaScript -->
+<script>
+    const totalFormCount = "{{ formset.total_form_count }}";
+    const formsetPrefix = "{{ formset.prefix }}";
+</script>
+
+<!-- Include external JavaScript file -->
+<script src="{% static 'js/formset_handling.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,88 @@
+/* Sticky footer CSS */
+html, body {
+    height: 100%;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1; /* This makes the main content take up the remaining space */
+}
+
+footer {
+    flex-shrink: 0; /* Prevents the footer from shrinking */
+}
+
+/* Navbar background color */
+.navbar {
+  background-color: #ffffff !important;
+  border-bottom: solid 2px #ccccce;
+  height: 50px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* Nav item link color */
+.navbar-nav .nav-link {
+  color: #3b03f3 !important;
+}
+
+/* Optional: Change nav item color on hover */
+.navbar-nav .nav-link:hover {
+  color: #4907f1 !important; /* Slightly darker shade on hover */
+}
+
+/* Optional: Active nav item styling */
+.navbar-nav .nav-link.active {
+  color: #4508ec !important;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #5830DA !important;
+}
+
+.icon-container {
+  background-color: #5830DA;
+  color: white;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.icon-container i {
+  font-size: 48px;
+}
+
+.card {
+  overflow: hidden;
+  padding-top: 50px;
+}
+
+.sidebar-row,
+.sidebar-menu {
+  min-height: calc(100vh - 50px);
+}
+
+.sidebar-menu {
+  overflow-y: auto;
+  border-right: 2px solid #e0e0e0; 
+}
+
+.nav .nav-link.submenu-link {
+  padding-left: 2rem; 
+}
+
+.contact-area {
+  border: 2px solid #e0e0e0;
+}

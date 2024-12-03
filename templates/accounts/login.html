@@ -1,0 +1,87 @@
+<!--accounts/login.html-->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <!-- Login Card -->
+      <div class="card">
+        <div class="card-header text-center">
+          <div class="icon-container">
+            <i class="fas fa-user-secret fa-6x"></i>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Display Non-Field Errors -->
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+              {% for error in form.non_field_errors %}
+                <strong>{{ error|escape }}</strong>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <!-- Login Form -->
+          <form action="{% url 'accounts:login' %}" method="post">
+            {% csrf_token %}
+            
+            <!-- Username Field -->
+            <div class="form-group">
+              <label for="username"><i class="fa fa-user"></i> Username</label>
+              <input
+                type="text"
+                class="form-control mt-2"
+                id="username"
+                name="username"
+                required
+                placeholder="name@domain.com"
+                value="{{ form.username.value|default:'' }}"
+              >
+              <!-- Display Field Errors -->
+              {% if form.username.errors %}
+                <div class="text-danger mt-1">
+                  {% for error in form.username.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group mt-3">
+              <label for="password"><i class="fa fa-lock"></i> Password</label>
+              <input
+                type="password"
+                class="form-control mt-2"
+                id="password"
+                name="password"
+                required
+              >
+              <!-- Display Field Errors -->
+              {% if form.password.errors %}
+                <div class="text-danger mt-1">
+                  {% for error in form.password.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-block mt-4">Login</button>
+          </form>
+        </div>
+
+        <!-- Card Footer Links -->
+        <div class="card-footer text-end">
+          <a href="{% url 'contact' %}" class="link">Don't have an account? Reach out to us now!</a>
+        </div>
+        <div class="card-footer text-end">
+          <a href="{% url 'password_reset' %}" class="link">Reset forgotten password</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

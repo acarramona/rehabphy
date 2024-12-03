@@ -1,0 +1,39 @@
+<!-- templates/accounts/patient_signup.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Rehabphy{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="bg-light py-5">
+    <div class="container text-center">
+        <h1 class="display-4">Patient Registration page</h1>
+        <form>
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="passwordconfirm" id="password">
+              </div>
+              <div class="mb-3">
+                <label for="passwordconfirm" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" name="passwordconfirm"  id="passwordconfirm">
+              </div>
+              <div class="d-grid gap-2 d-md-block">
+                <button class="btn btn-primary" type="button">Submit</button>
+                <p>Having account? <a href="{% url 'accounts:login' %}" class="btn btn-secondary-outline"> login </a> <!--Use fontawesome icon-->
+              </div>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+{% endblock %}

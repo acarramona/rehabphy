@@ -1,0 +1,16 @@
+<!-- templates/emails/welcome_email.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to Our Service!</title>
+</head>
+<body>
+    <h1>Welcome, {{ name }}!</h1>
+    <p>Your account has been successfully created.</p>
+    <p>Your username is: <strong>{{ username }}</strong></p>
+    <p>Your password is: <strong>{{ password }}</strong></p>
+    <p>You can log in using the following link:</p>
+    <p><a href="{{ login_url }}">{{ login_url }}</a></p>
+    <p>Thank you for joining us!</p>
+</body>
+</html>
