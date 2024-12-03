@@ -27,3 +27,4 @@ SETP 2:
     - Once a user is registered they can login.
         http://127.0.0.1:8000/home
 
+This project is for my final undergraduate subject at University of Bolton.
